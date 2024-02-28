@@ -54,9 +54,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                        ColorChangingButton()
-//                        LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
-//                    MultipleRows()
+                    ColorChangingButton()
+                    LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
+                    MultipleRows()
                     PhotoGrid()
                 }
             }
@@ -177,9 +177,9 @@ fun PhotoGrid() {
 @Composable
 fun GreetingPreview() {
     Assignment2Theme {
-//        LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
-//        ColorChangingButton()
-//        MultipleRows()
+        LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
+        ColorChangingButton()
+        MultipleRows()
         PhotoGrid()
     }
 }

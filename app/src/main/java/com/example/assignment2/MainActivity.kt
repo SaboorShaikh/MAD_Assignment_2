@@ -39,32 +39,71 @@ import androidx.compose.ui.unit.sp
 import com.example.assignment2.ui.theme.Assignment2Theme
 
 class MainActivity : ComponentActivity() {
+
+    // Enum to represent the selected task
+    enum class Task {
+        ColorChangingButton,
+        LayoutsPractice,
+        MultipleRows,
+        PhotoGrid
+    }
+
+    // Mutable state to keep track of the selected task
+    private var selectedTask by mutableStateOf(Task.ColorChangingButton)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Assignment2Theme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ColorChangingButton()
-                    LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
-                    MultipleRows()
-                    PhotoGrid()
+                    // Column to hold the buttons and the content
+                    Column {
+                        // Row for buttons
+                        ButtonRow(selectedTask) { newTask ->
+                            selectedTask = newTask
+                        }
+                        // Content based on the selected task
+                        when (selectedTask) {
+                            Task.ColorChangingButton -> ColorChangingButton()
+                            Task.LayoutsPractice -> LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
+                            Task.MultipleRows -> MultipleRows()
+                            Task.PhotoGrid -> PhotoGrid()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Composable function to create buttons row
+    @Composable
+    fun ButtonRow(selectedTask: Task, onTaskSelected: (Task) -> Unit) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Task.values().forEach { task ->
+                Button(
+                    onClick = { onTaskSelected(task) },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = if (task == selectedTask) Color.White else Color.Black
+                    )
+                ) {
+                    Text(task.name)
                 }
             }
         }
     }
 }
 
-// Task 1
 @Composable
 fun ColorChangingButton() {
-    Column(Modifier
-            .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var color by remember { mutableStateOf(Color.Red) }
 
@@ -73,15 +112,12 @@ fun ColorChangingButton() {
                 color = if (color == Color.Red) Color.Green else Color.Red
             },
             colors = ButtonDefaults.buttonColors(containerColor = color)
-        )
-        {
+        ) {
             Text(text = "Click Me")
         }
     }
 }
 
-
-// Task 2
 @Composable
 fun LayoutsPractice(Name: String, Number: String, imgResource: Int){
     Row (Modifier.fillMaxWidth()){
@@ -106,7 +142,6 @@ fun LayoutsPractice(Name: String, Number: String, imgResource: Int){
     }
 }
 
-// Task 3
 @Composable
 fun MultipleRows() {
     Column (Modifier.fillMaxSize()) {
@@ -119,7 +154,6 @@ fun MultipleRows() {
     }
 }
 
-// Task 4
 enum class Superhero(val resourceId: Int, val displayName: String) {
     IRON_MAN(R.drawable.ironman, "Iron Man"),
     HULK(R.drawable.hulk, "Hulk"),
@@ -128,7 +162,6 @@ enum class Superhero(val resourceId: Int, val displayName: String) {
     BLACK_WIDOW(R.drawable.blackwidow, "Black Widow"),
     THOR(R.drawable.thor, "Thor")
 }
-
 @Composable
 fun PhotoItem(superhero: Superhero) {
     Column(
@@ -167,10 +200,12 @@ fun PhotoGrid() {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     Assignment2Theme {
+        // Replace these composable functions with the appropriate ones for preview
         LayoutsPractice("Abdul Saboor","0346 8266660", R.drawable.polar)
         ColorChangingButton()
         MultipleRows()
